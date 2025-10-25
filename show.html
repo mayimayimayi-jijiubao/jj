@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>查看急救信息</title>
+  <script src="https://cdn1.lncld.net/static/js/av-min-1.10.1.js"></script>
+  <script>
+    AV.init({
+      appId: "Ivzq5oxAhWX2BqNvdFKQbBjl-gzGzoHsz",
+      appKey: "ESfT6VmHoUAzyc8Ay0ebZbuC",
+      serverURL: "https://ivzq5oxa.lc-cn-n1-shared.com"
+    });
+
+    async function loadInfo() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) return alert('未提供ID');
+      try {
+        const query = new AV.Query('EmergencyInfo');
+        const obj = await query.get(id);
+        const data = obj.toJSON();
+        document.getElementById('info').innerHTML = `
+          <p><strong>姓名：</strong>${data.name || ''}</p>
+          <p><strong>血型：</strong>${data.bloodType || ''}</p>
+          <p><strong>紧急联系人：</strong>${data.contact || ''}</p>
+          <p><strong>备注：</strong>${data.medicalNote || ''}</p>`;
+      } catch (err) {
+        alert('❌ 加载失败：' + err.message);
+      }
+    }
+    window.onload = loadInfo;
+  </script>
+</head>
+<body style="font-family: sans-serif; margin: 30px;">
+  <h2>急救信息展示</h2>
+  <div id="info">加载中...</div>
+  <p><a href="index.html">返回首页</a></p>
+</body>
+</html>

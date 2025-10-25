@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>填写急救信息</title>
+  <script src="https://cdn1.lncld.net/static/js/av-min-1.10.1.js"></script>
+  <script>
+    AV.init({
+      appId: "Ivzq5oxAhWX2BqNvdFKQbBjl-gzGzoHsz",
+      appKey: "ESfT6VmHoUAzyc8Ay0ebZbuC",
+      serverURL: "https://ivzq5oxa.lc-cn-n1-shared.com"
+    });
+
+    async function saveInfo() {
+      const EmergencyInfo = AV.Object.extend('EmergencyInfo');
+      const info = new EmergencyInfo();
+      info.set('name', document.getElementById('name').value);
+      info.set('bloodType', document.getElementById('bloodType').value);
+      info.set('contact', document.getElementById('contact').value);
+      info.set('medicalNote', document.getElementById('medicalNote').value);
+      try {
+        const saved = await info.save();
+        alert('✅ 信息已保存！ID：' + saved.id + '\n请复制此ID用于生成二维码');
+      } catch (err) {
+        alert('❌ 保存失败：' + err.message);
+      }
+    }
+  </script>
+</head>
+<body style="font-family: sans-serif; margin: 30px;">
+  <h2>填写急救信息</h2>
+  <label>姓名：<input id="name"></label><br/>
+  <label>血型：<input id="bloodType"></label><br/>
+  <label>紧急联系人：<input id="contact"></label><br/>
+  <label>备注：<input id="medicalNote"></label><br/>
+  <button onclick="saveInfo()">保存信息</button>
+  <p><a href="index.html">返回首页</a></p>
+</body>
+</html>
